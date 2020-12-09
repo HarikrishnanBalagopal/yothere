@@ -1,0 +1,25 @@
+name: upload_to_release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "the tag of the release that we should upload to"
+        required: true
+        default: yo.there
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "yo there, the ref is ${{ github.ref }}"
+          echo "yo again, the token is ${{ secrets.GITHUB_TOKEN }}"
+          mkdir -p _dist/output/
+          echo '${{ secrets.GITHUB_TOKEN }}' > _dist/output/foo
+      - name: upload release assets
+        uses: HarikrishnanBalagopal/upload-release-action@v2.2.0-beta.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.event.inputs.tag }}
+          file: _dist/output/*
+          file_glob: true
+          overwrite: true

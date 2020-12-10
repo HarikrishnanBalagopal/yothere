@@ -10,13 +10,22 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+      - name: create release draft
+        run: |
+          npm install github-release-notes@v0.17.3 -g
+          gren release --draft --prerelease --tags ${{ github.event.inputs.tag }} --username=${{ github.repository_owner }} --repo=${{ github.event.repository.name }} --token=${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo "yo there, the ref is ${{ github.ref }}"
-          echo "yo again, the token is ${{ secrets.GITHUB_TOKEN }}"
           mkdir -p _dist/output/
           echo '${{ secrets.GITHUB_TOKEN }}' > _dist/output/foo
       - name: upload release assets
         uses: HarikrishnanBalagopal/upload-release-action@v3
+
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.event.inputs.tag }}

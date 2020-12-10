@@ -1,10 +1,9 @@
 let printPreamble = true;
+const preamble = `# Changelog
+Some general stuff we want to say.`;
 
-function templ({ labels, name, text, url }) {
-    const preamble = `# Changelog
-Some general stuff we want to say.
-`;
-    const line = `- ${name} [${text}](${url})`;
+function templ({ heading }) {
+    const line = `\n## ${heading}\n`;
     if (printPreamble) {
         printPreamble = false;
         return preamble + line;
@@ -14,7 +13,7 @@ Some general stuff we want to say.
 
 module.exports = {
     "dataSource": "prs",
-    "prefix": "Move2Kube v",
+    "prefix": "Move2Kube ",
     "onlyMilestones": false,
     "groupBy":
     {
@@ -22,6 +21,7 @@ module.exports = {
         "🐛 Bug Fixes": ["bug"]
     },
     "template": {
-        "issue": templ,
+        "group": templ,
+        "issue": ({ name, text, url }) => `- ${name} [${text}](${url})`,
     }
 }

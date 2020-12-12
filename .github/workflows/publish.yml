@@ -16,7 +16,7 @@ jobs:
       matrix:
         repo: ["yothere"]
     steps:
-      - name: get release draft id
+      - id: get_release_draft_id
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}
@@ -40,4 +40,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MOVE2KUBE_PATOKEN }}
         with:
           repo: ${{ matrix.repo }}
-          id: ${{ steps.create_release.outputs.id }}
+          id: ${{ steps.get_release_draft_id.outputs.id }}

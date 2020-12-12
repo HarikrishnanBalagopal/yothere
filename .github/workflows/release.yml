@@ -3,9 +3,13 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "the tag of the release that we should upload to"
+        description: "the tag of the release"
         required: true
-        default: yo.there
+        default: yo.there.200
+      prev_tag:
+        description: "the changelog will be computed from this tag onwards"
+        required: false
+
 jobs:
   upload:
     runs-on: ubuntu-latest
@@ -29,9 +33,14 @@ jobs:
         with:
           node-version: ${{ steps.info.outputs.node_version }}
       - name: create release draft
+        shell: bash
         run: |
           npm install github-release-notes@v0.17.3 -g
+          if [[ '${{ github.event.inputs.prev_tag }}' ]] ; then
+          gren release --draft --prerelease --tags ${{ github.event.inputs.tag }}..${{ github.event.inputs.prev_tag }} --username=${{ github.repository_owner }} --repo=${{ github.event.repository.name }} --token=${{ secrets.GITHUB_TOKEN }}
+          else
           gren release --draft --prerelease --tags ${{ github.event.inputs.tag }} --username=${{ github.repository_owner }} --repo=${{ github.event.repository.name }} --token=${{ secrets.GITHUB_TOKEN }}
+          fi
       - run: |
           mkdir -p _dist/output/
           echo '${{ secrets.GITHUB_TOKEN }}' > _dist/output/foo

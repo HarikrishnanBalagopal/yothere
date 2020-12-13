@@ -17,7 +17,7 @@ jobs:
             const labels = ['bug'];
             const resp = await github.issues.addLabels({
               ..context.repo,
-              github.event.number,
+              issue_number: github.event.number,
               labels
             });
             if (resp.status !== 200) {

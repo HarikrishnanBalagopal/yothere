@@ -15,7 +15,7 @@ jobs:
       - run: echo '${{ github.event.number }}'
       - uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}
           script: |
             const labels = ['bug'];
             core.info(github);

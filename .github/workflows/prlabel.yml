@@ -16,9 +16,9 @@ jobs:
           script: |
             const labels = ['bug'];
             const resp = await github.issues.addLabels({
-              ..context.repo
+              ..context.repo,
               github.event.number,
-              labels,
+              labels
             });
             if (resp.status !== 200) {
               core.setFailed(`Failed to set the labels ${labels} on the PR. Status code: ${resp.status}`)

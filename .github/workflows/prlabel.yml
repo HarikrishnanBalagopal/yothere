@@ -10,14 +10,18 @@ jobs:
     name: Add labels
     runs-on: ubuntu-latest
     steps:
+      - run: echo '${{ github}}'
+      - run: echo '${{ github.event }}'
+      - run: echo '${{ github.event.number }}'
       - uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const labels = ['bug'];
+            core.info(github);
             const resp = await github.issues.addLabels({
               ...context.repo,
-              issue_number: github.event.number,
+              issue_number: ${{ github.event.number }},
               labels
             });
             if (resp.status !== 200) {

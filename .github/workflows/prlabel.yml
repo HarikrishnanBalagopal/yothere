@@ -16,7 +16,7 @@ jobs:
           script: |
             const labels = ['bug'];
             const resp = await github.issues.addLabels({
-              ..context.repo,
+              ...context.repo,
               issue_number: github.event.number,
               labels
             });

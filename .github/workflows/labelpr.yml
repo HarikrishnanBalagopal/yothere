@@ -12,7 +12,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const pr_welcome_msg = `Thanks for opening this pull request!`;
+            const pr_welcome_msg = `Thanks for making a pull request! 😃`;
+            const to_remove = ['fix', 'enhancement'];
 
             if(context.payload.pull_request.comments === 0) {
               await github.issues.createComment({ ...context.repo, issue_number: context.payload.number, body: pr_welcome_msg});
@@ -20,7 +21,7 @@ jobs:
 
             const title = context.payload.pull_request.title;
             const results = /^(\w+)(\(\w+\))?!?:/.exec(title);
-            if (results === null) core.setFailed(`The title ${title} does not follow conventional commits spec: https://www.conventionalcommits.org/en/v1.0.0/#summary`);
+            if (results === null) core.setFailed(`The title does not follow conventional commits spec: https://www.conventionalcommits.org/en/v1.0.0/#summary Title: ${title}`);
 
             const pr_type = results[1];
             core.debug(`pr_type:${pr_type}`);
@@ -37,5 +38,7 @@ jobs:
             core.debug(`label: ${label}`);
             if(label === '')core.setFailed(`Unknown pull request type ${pr_type}`);
 
-            const labels = [label];
-            await github.issues.addLabels({ ...context.repo, issue_number: context.payload.number, labels });
+            const labels = context.payload.pull_request.labels;
+            const new_labels = labels.filter(label => !to_remove.includes(label)); // remove all labels listed in to_remove
+            new_labels.push(label);
+            await github.issues.update({ ...context.repo, issue_number: context.payload.number, labels: new_labels });

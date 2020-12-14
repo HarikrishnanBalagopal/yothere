@@ -27,3 +27,4 @@ jobs:
             echo 'true'
           else
             echo 'false'
+          fi

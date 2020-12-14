@@ -1,0 +1,25 @@
+name: hmm
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "foobar"
+        required: true
+        default: "v0.1.0"
+
+jobs:
+  foobar:
+    runs-on: ubuntu-latest
+    steps:
+      - id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@v1
+        with:
+          input_string: ${{ github.event.inputs.tag }}
+      - run: |
+          echo ${{ steps.semver_parser.outputs.major }}
+          echo ${{ steps.semver_parser.outputs.minor }}
+          echo ${{ steps.semver_parser.outputs.patch }}
+          echo ${{ steps.semver_parser.outputs.prerelease }}
+          echo ${{ steps.semver_parser.outputs.build }}
+          echo ${{ steps.semver_parser.outputs.fullversion }}

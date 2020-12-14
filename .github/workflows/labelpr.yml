@@ -22,12 +22,12 @@ jobs:
 
             const title = context.payload.pull_request.title;
             const results = /^(\w+)(\(\w+\))?!?:/.exec(title);
-            if (results === null) core.setFailed(`The title does not follow conventional commits spec: https://www.conventionalcommits.org/en/v1.0.0/#summary Title: ${title}`);
+            if (results === null) return core.setFailed(`The title does not follow conventional commits spec: https://www.conventionalcommits.org/en/v1.0.0/#summary Title: ${title}`);
 
             const pr_type = results[1];
             core.info(`pr_type: ${pr_type}`);
 
-            if(!valid_pr_types.includes(pr_type))core.setFailed(`Unknown pull request type: ${pr_type}`);
+            if (!valid_pr_types.includes(pr_type)) return core.setFailed(`Unknown pull request type: ${pr_type}`);
 
             const labels = context.payload.pull_request.labels;
             const new_labels = labels.filter(label => !valid_pr_types.includes(label.name)); // keep all labels that are not in valid_pr_types

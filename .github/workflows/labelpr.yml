@@ -12,8 +12,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            core.info(`context.payload.pull_request: ${JSON.stringify(context.payload.pull_request)}`);
-            core.info(`context: ${JSON.stringify(context)}`);
+            // core.info(`context.payload.pull_request: ${JSON.stringify(context.payload.pull_request)}`);
+            // core.info(`context: ${JSON.stringify(context)}`);
 
             const pr_welcome_msg = `Thanks for making a pull request! 😃`;
             const to_remove = ['fix', 'enhancement'];
@@ -42,6 +42,6 @@ jobs:
             if(label === '')core.setFailed(`Unknown pull request type ${pr_type}`);
 
             const labels = context.payload.pull_request.labels;
-            const new_labels = labels.filter(label => !to_remove.includes(label)); // remove all labels listed in to_remove
-            new_labels.push(label);
+            const new_labels = labels.filter(label => !to_remove.includes(label.name)); // remove all labels listed in to_remove
+            new_labels.push({name: label});
             await github.issues.update({ ...context.repo, issue_number: context.payload.number, labels: new_labels });

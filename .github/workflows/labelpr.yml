@@ -20,11 +20,11 @@ jobs:
             let resp = await github.issues.createComment({ ...context.repo, issue_number: context.payload.number, body: "Thanks for opening this pull request!" });
             core.info('first   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             core.info(`${JSON.stringify(resp)}`)
-            if(resp.status > 399)core.setFailed(`Failed to create the comment. Status:${resp.status}`);
+            if (resp.status > 399) core.setFailed(`Failed to create the comment. Status:${resp.status}`);
 
             const title = context.payload.pull_request.title;
             const results = /^(\w+)(\(\w+\))?!?:/.exec(title);
-            if (results === null) {core.setFailed(`The title ${title} does not follow conventional commits spec.`)}
+            if (results === null) core.setFailed(`The title ${title} does not follow conventional commits spec.`);
 
             const pr_type = results[1];
             core.debug(`pr_type:${pr_type}`);
@@ -45,4 +45,4 @@ jobs:
             resp = await github.issues.addLabels({ ...context.repo, issue_number: context.payload.number, labels });
             core.info('second   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             core.info(`${JSON.stringify(resp)}`)
-            if(resp.status > 399)core.setFailed(`Failed to set the labels ${labels} Status:${resp.status}`);
+            if (resp.status > 399) core.setFailed(`Failed to set the labels ${labels} Status:${resp.status}`);

@@ -1,6 +1,8 @@
-name: Label PRs when the semantic check finishes
+name: Label PRs
 
-on: status
+on:
+  pull_request_target:
+    types: [opened, edited]
 
 jobs:
   label_pr:

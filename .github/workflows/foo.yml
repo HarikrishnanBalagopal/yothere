@@ -23,3 +23,7 @@ jobs:
           echo ${{ steps.semver_parser.outputs.prerelease }}
           echo ${{ steps.semver_parser.outputs.build }}
           echo ${{ steps.semver_parser.outputs.fullversion }}
+          if [[ '${{ steps.semver_parser.outputs.prerelease }}' ]] ; then
+            echo 'true'
+          else
+            echo 'false'

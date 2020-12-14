@@ -16,3 +16,7 @@ jobs:
             core.info(`${JSON.stringify(github)}`)
             core.info('context  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             core.info(`${JSON.stringify(context)}`)
+
+            await github.issues.createComment({ ...context.repo, issue_number: context.payload.number, body: "Thanks for opening this pull request!" });
+            const labels = ['enhancement'];
+            await github.issues.addLabels({ ...context.repo, issue_number: context.payload.number, labels });

@@ -12,6 +12,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            core.info(`context.payload.pull_request: ${JSON.stringify(context.payload.pull_request)}`);
+            core.info(`context: ${JSON.stringify(context)}`);
+
             const pr_welcome_msg = `Thanks for making a pull request! 😃`;
             const to_remove = ['fix', 'enhancement'];
 
@@ -24,7 +27,7 @@ jobs:
             if (results === null) core.setFailed(`The title does not follow conventional commits spec: https://www.conventionalcommits.org/en/v1.0.0/#summary Title: ${title}`);
 
             const pr_type = results[1];
-            core.debug(`pr_type:${pr_type}`);
+            core.info(`pr_type:${pr_type}`);
             let label = '';
             switch(pr_type) {
               case 'fix':
@@ -35,7 +38,7 @@ jobs:
               case 'feat':
                 label = 'enhancement'; break;
             }
-            core.debug(`label: ${label}`);
+            core.info(`label: ${label}`);
             if(label === '')core.setFailed(`Unknown pull request type ${pr_type}`);
 
             const labels = context.payload.pull_request.labels;

@@ -1,8 +1,6 @@
 name: Label PRs when the semantic check finishes
 
-on:
-  check_run:
-    types: [completed]
+on: status
 
 jobs:
   label_pr:

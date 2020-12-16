@@ -33,7 +33,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            core.setFailed('some reason')
             console.log('console.log', context.repo)
             core.info(`core.info, ${JSON.stringify(context.repo)}`)
             core.debug(`core.debug ${JSON.stringify(context.repo)}`)

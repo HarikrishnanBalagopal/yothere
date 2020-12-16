@@ -37,3 +37,19 @@ jobs:
             console.log('console.log', context.repo)
             core.info(`core.info, ${JSON.stringify(context.repo)}`)
             core.debug(`core.debug ${JSON.stringify(context.repo)}`)
+      - if: ${{ steps.semver_parser.outputs.prerelease == '' }}
+        run: |
+          FOO=$(echo 'empty')
+          echo $FOO
+      - if: ${{ steps.semver_parser.outputs.prerelease != '' }}
+        run: |
+          FOO=$(echo 'not empty')
+          echo $FOO
+      - if: ${{ steps.semver_parser.outputs.prerelease == null }}
+        run: |
+          FOO=$(echo 'null')
+          echo $FOO
+      - if: ${{ steps.semver_parser.outputs.prerelease != null }}
+        run: |
+          FOO=$(echo 'not null')
+          echo $FOO

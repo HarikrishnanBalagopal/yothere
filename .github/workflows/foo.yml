@@ -28,3 +28,11 @@ jobs:
           else
             echo 'false'
           fi
+      - id: logging
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('console.log', context.repo)
+            core.info(`core.info, ${JSON.stringify(context.repo)}`)
+            core.debug(`core.debug ${JSON.stringify(context.repo)}`)

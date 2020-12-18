@@ -1,0 +1,11 @@
+name: What
+
+on: push
+
+jobs:
+  build_and_test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: tree -a

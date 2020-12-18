@@ -1,6 +1,10 @@
 name: What
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - "release-*"
 
 jobs:
   build_and_test:
@@ -8,7 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: ls -a
+      - run: |
+          ls -a
+          echo 'github ${{ github }}'
+          echo 'github.sha  ${{ github.sha }}'
+          echo 'github.ref  ${{ github.ref }}'
+          echo 'context ${{ context }}'
+          echo 'context.ref ${{ context.ref }}'
       - uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}

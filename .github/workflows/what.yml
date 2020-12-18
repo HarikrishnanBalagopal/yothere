@@ -9,3 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ls -a
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}
+          script: |
+            core.info(`github: ${JSON.stringify(github)}`)
+            core.info(`context: ${JSON.stringify(context)}`)

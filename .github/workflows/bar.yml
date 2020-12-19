@@ -1,0 +1,15 @@
+name: PR Build
+
+on:
+  pull_request:
+    branches:
+      - main
+      - "release-*"
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.ref }}
+      - run: echo ${{ github.ref == 'refs/heads/main' }}

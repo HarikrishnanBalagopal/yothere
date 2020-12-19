@@ -13,11 +13,13 @@ jobs:
     steps:
       - run: echo ${{ github.ref }}
       - run: echo ${{ github.ref == 'refs/heads/main' }}
+      - run: echo ${{ github.event.inputs }}
+      - run: echo ${{ github.event.payload }}
+      - run: echo ${{ github.event.branches }}
       - uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            console.log('github', github)
-            core.info(`github ${github}`)
-            console.log('context', context)
-            core.info(`context ${context}`)
+            # console.log('github', github)
+            # console.log('context', context)
+            console.log('hello');

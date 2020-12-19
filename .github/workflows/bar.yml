@@ -17,7 +17,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const resp = await github.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {...context.repo, context.payload.number});
+            const resp = await github.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {...context.repo, pull_number:context.payload.number});
             core.setOutput('branch', resp.data.base.ref);
       - if: ${{ steps.branch_info.outputs.branch == 'main' }}
         run: echo 'pr made on main branch'

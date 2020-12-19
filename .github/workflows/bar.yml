@@ -12,15 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ github.ref }}
-      - run: echo ${{ github.ref == 'refs/heads/main' }}
-      - run: echo ${{ github.event }}
-      - run: echo ${{ github.event.inputs }}
-      - run: echo ${{ github.event.payload }}
-      - run: echo ${{ github.event.branches }}
-      - uses: actions/github-script@v3
+      - id: branch_info
+        uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // console.log('github', github)
-            // console.log('context', context)
-            console.log('hello');
+            const resp = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {owner, repo, pull_number})
+            core.setOutput('branch', resp.data.base.ref)
+      - if: ${{ steps.branch_info.outputs.branch == 'main' }}
+        run: echo 'pr made on main branch'
+      - if: ${{ steps.branch_info.outputs.branch != 'main' }}
+        run: echo 'pr made on another branch. branch ${{ steps.branch_info.outputs.branch }}'

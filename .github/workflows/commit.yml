@@ -1,6 +1,12 @@
 name: commit test
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      json:
+        description: the json data
+        required: true
+        default: '{"run_id":"${{ github.run_id }}"}'
 
 jobs:
   foobar:
@@ -9,12 +15,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: yoyo
-      - run: echo 'yohoho v3' >> foobar.json
+      - run: echo 'input ${{ github.event.inputs.json }}' > foobar.json
       - uses: EndBug/add-and-commit@v6
         with:
           add: foobar.json
           author_name: commit workflow
-          author_email: a@b.c
+          author_email: harikrishmenon@gmail.com
           branch: yoyo
           cwd: "."
           message: update the foobar file with latest info

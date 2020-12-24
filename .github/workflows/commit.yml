@@ -1,0 +1,22 @@
+name: commit test
+
+on: workflow_dispatch
+
+jobs:
+  foobar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: yoyo
+      - run: echo 'yohoho v3' >> foobar.json
+      - uses: EndBug/add-and-commit@v6
+        with:
+          add: foobar.json
+          author_name: commit workflow
+          author_email: a@b.c
+          branch: yoyo
+          cwd: "."
+          message: update the foobar file with latest info
+          pull_strategy: "--ff-only"
+          token: ${{ secrets.GITHUB_TOKEN }}

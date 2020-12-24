@@ -16,7 +16,7 @@ jobs:
         with:
           ref: yoyo
       - run: echo 'run_id ${{ github.run_id }}' > foobar.json
-      - run: echo 'input ${{ github.event.inputs.json }}' > foobar.json
+      - run: echo 'input ${{ github.event.inputs.json }}' >> foobar.json
       - uses: EndBug/add-and-commit@v6
         with:
           add: foobar.json

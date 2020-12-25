@@ -6,16 +6,20 @@ jobs:
   release_info:
     runs-on: ubuntu-latest
     steps:
-      - id: release_info
+      - id: info1
         uses: HarikrishnanBalagopal/nextrelease@main
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           owner: "kubernetes"
           repo: "kubernetes"
+      - id: info2
+        uses: HarikrishnanBalagopal/nextrelease@main
       - uses: actions/checkout@v2
         with:
           ref: yoyo
       - run: echo 'run_id ${{ github.run_id }}' > foobar.json
-      - run: echo 'input ${{ steps.release_info.outputs.release_info }}' >> foobar.json
+      - run: echo 'info1 ${{ steps.info1.outputs.release_info }}' >> foobar.json
+      - run: echo 'info2 ${{ steps.info2.outputs.release_info }}' >> foobar.json
       - uses: EndBug/add-and-commit@v6
         with:
           add: foobar.json

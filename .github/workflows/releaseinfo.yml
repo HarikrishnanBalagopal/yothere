@@ -1,0 +1,25 @@
+name: release info
+
+on: workflow_dispatch
+
+jobs:
+  release_info:
+    runs-on: ubuntu-latest
+    steps:
+      - id: release_info
+        uses: HarikrishnanBalagopal/nextrelease@main
+        with:
+          owner: "kubernetes"
+          repo: "kubernetes"
+      - run: echo 'run_id ${{ github.run_id }}' > foobar.json
+      - run: echo 'input ${{ steps.release_info.outputs.release_info }}' >> foobar.json
+      - uses: EndBug/add-and-commit@v6
+        with:
+          add: foobar.json
+          author_name: commit workflow
+          author_email: harikrishmenon@gmail.com
+          branch: yoyo
+          cwd: "."
+          message: update the foobar file with latest info
+          pull_strategy: "--ff-only"
+          token: ${{ secrets.GITHUB_TOKEN }}

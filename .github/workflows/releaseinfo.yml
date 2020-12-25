@@ -11,6 +11,9 @@ jobs:
         with:
           owner: "kubernetes"
           repo: "kubernetes"
+      - uses: actions/checkout@v2
+        with:
+          ref: yoyo
       - run: echo 'run_id ${{ github.run_id }}' > foobar.json
       - run: echo 'input ${{ steps.release_info.outputs.release_info }}' >> foobar.json
       - uses: EndBug/add-and-commit@v6

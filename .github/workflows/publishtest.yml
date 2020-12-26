@@ -1,0 +1,22 @@
+name: Publish Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      owner_repo_ids:
+        required: true
+        description: |
+          json array of {owner, repo, release_id} objects
+
+jobs:
+  some:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.event.inputs.owner_repo_ids }}
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            console.log('context.payload', context.payload);
+            console.log('github', github);
+            console.log('context', context);

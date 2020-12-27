@@ -1,0 +1,29 @@
+name: Tag and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "current tag: The tag for this release"
+        required: true
+        default: v0.1.0-rc.2
+      prev_tag:
+        description: "previous tag: Tag from which to start calculating the changelog"
+        required: false
+      commit_ref:
+        description: "commit ref: The branch, tag or SHA of the commit to use for the release."
+        required: false
+        default: main
+
+jobs:
+  huh:
+    name: huh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}
+          script: |
+            console.log('context.payload', context.payload);
+            console.log('github', github);
+            console.log('context', context);

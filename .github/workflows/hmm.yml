@@ -1,0 +1,16 @@
+name: yay this was called
+
+on: workflow_dispatch
+
+jobs:
+  yay:
+    name: yay_this_was_called
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('${{ github.event }}');
+            console.log('context.ref', context.ref);
+            console.log('context', context);

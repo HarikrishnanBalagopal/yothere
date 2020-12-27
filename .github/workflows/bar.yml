@@ -10,7 +10,14 @@ jobs:
       - run: echo '${{ github.ref }}'
       - uses: actions/github-script@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}
           script: |
-            console.log('context.ref', context.ref)
-            console.log('context', context)
+            const stellar = JSON.parse('[{"owner": "kon", "repo": "yo", "release_id": 42}]');
+            console.log('stellar:', stellar);
+            console.log('context.repo', context.repo);
+            console.log('context', context);
+            await github.actions.createWorkflowDispatch({
+              ...context.repo,
+              workflow_id:'hmm.yml',
+              ref:context.ref,
+            });

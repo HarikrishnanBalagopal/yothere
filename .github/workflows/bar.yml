@@ -18,7 +18,8 @@ jobs:
             console.log('context.repo', context.repo);
             console.log('context', context);
             await github.actions.createWorkflowDispatch({
-              ...context.repo,
-              workflow_id:'hmm.yml',
+              owner: context.repo.owner,
+              repo: 'yohoo',
+              workflow_id:'a-new-one.yml',
               ref:context.ref,
             });

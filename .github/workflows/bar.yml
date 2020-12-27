@@ -14,6 +14,7 @@ jobs:
           script: |
             const stellar = JSON.parse('[{"owner": "kon", "repo": "yo", "release_id": 42}]');
             console.log('stellar:', stellar);
+
             console.log('context.repo', context.repo);
             console.log('context', context);
             await github.actions.createWorkflowDispatch({

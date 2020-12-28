@@ -53,4 +53,15 @@ jobs:
               }
             }
 
-            const workflow_run_id = workflow_runs[0].id;
+            const run_id = workflow_runs[0].id;
+            for(let t = 0; t < timeout; t += time_between_polls) {
+              const resp = await github.actions.getWorkflowRun({owner, repo, run_id});
+              console.log(resp);
+              if(resp.conclusion !== null) {
+                if(resp.conclusion === 'success' && resp.status === 'completed') {
+                  return core.info('Workflow succeeded');
+                }
+                return core.setFailed('Workflow failed');
+              }
+            }
+            return core.setFailed('Timeout. Workflow still in progress.');

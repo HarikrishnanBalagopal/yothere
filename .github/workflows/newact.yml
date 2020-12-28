@@ -14,6 +14,10 @@ jobs:
             const repo = 'yohoo';
             const workflow_filename = 'target.yml';
             const commit_ref_to_run_on = 'main';
+            const max_tries = 3;
+            const time_between_polls = 5000; // in milli seconds
+            const timeout = 20 * 60 * 1000; // in milli seconds
+
             const resp = await github.actions.createWorkflowDispatch({
               owner,
               repo,
@@ -21,7 +25,7 @@ jobs:
               ref: commit_ref_to_run_on,
               inputs: {"foo": "bar"},
             });
-            console.log(resp);
+            core.debug('workflow dispatched', resp);
 
             function wait(milli_seconds) {
               return new Promise(resolve => {
@@ -30,8 +34,8 @@ jobs:
             }
 
             let workflow_runs = [];
-            for(let i = 0; i < 3; i++) {
-              await wait(2000); // pause 2 seconds to let the workflow get scheduled.
+            for(let i = 0; i < max_tries; i++) {
+              await wait(time_between_polls); // pause X seconds to let the workflow get scheduled.
               const resp = await github.actions.listWorkflowRuns({
                 owner,
                 repo,
@@ -40,7 +44,7 @@ jobs:
                 event: "workflow_dispatch",
               });
               if(resp.data && resp.data.workflow_runs && resp.data.workflow_runs.length > 0) {
-                console.log(resp);
+                core.debug('found the workflow run', resp);
                 workflow_runs = resp.data.workflow_runs;
                 break;
               }

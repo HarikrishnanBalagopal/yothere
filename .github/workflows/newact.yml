@@ -1,0 +1,24 @@
+name: Dispatch And Wait
+
+on: workflow_dispatch
+
+jobs:
+  dispatch_and_wait:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}
+          script: |
+            const owner = 'HarikrishnanBalagopal';
+            const repo = 'yohoo';
+            const workflow_filename = 'target.yml';
+            const commit_ref_to_run_on = 'main';
+            const resp = await github.actions.createWorkflowDispatch({
+              owner,
+              repo,
+              workflow_id: workflow_filename,
+              ref: commit_ref_to_run_on,
+              inputs: {"foo": "bar"},
+            });
+            console.log(resp);

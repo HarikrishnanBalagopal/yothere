@@ -29,17 +29,27 @@ jobs:
               });
             }
 
-            await wait(2000); // pause 2 seconds to let the workflow get scheduled.
+            let workflow_runs = [];
+            for(let i = 0; i < 3; i++) {
+              await wait(2000); // pause 2 seconds to let the workflow get scheduled.
+              const resp = await github.actions.listWorkflowRuns({
+                owner,
+                repo,
+                workflow_id: workflow_filename,
+                branch: commit_ref_to_run_on,
+                event: "workflow_dispatch",
+              });
+              if(resp.data && resp.data.workflow_runs && resp.data.workflow_runs.length > 0) {
+                console.log(resp);
+                workflow_runs = resp.data.workflow_runs;
+                break;
+              }
+              if(i === 3) {
+                return core.setFailed('Failed to get the workflow run');
+              }
+            }
 
-            const resp1 = await github.actions.listWorkflowRuns({
-              owner,
-              repo,
-              workflow_id: workflow_filename,
-              branch: commit_ref_to_run_on,
-              event: "workflow_dispatch",
-            });
-            console.log(resp1);
-
-            for(const workflow_run of resp1.data.workflow_runs) {
+            console.log('workflow_runs:');
+            for(const workflow_run of workflow_runs) {
               console.log(workflow_run);
             }

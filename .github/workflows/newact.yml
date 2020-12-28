@@ -57,7 +57,7 @@ jobs:
             for(let t = 0; t < timeout; t += time_between_polls) {
               await wait(time_between_polls);
               const resp = await github.actions.getWorkflowRun({owner, repo, run_id});
-              core.info(`still waiting. got response: ${resp}`);
+              core.info(`still waiting. status: ${resp.data.status}`);
               if(resp.data.conclusion !== null) {
                 if(resp.data.conclusion === 'success' && resp.data.status === 'completed') {
                   return core.info('Workflow succeeded');

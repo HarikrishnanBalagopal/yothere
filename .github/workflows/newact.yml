@@ -48,12 +48,9 @@ jobs:
                 workflow_runs = resp.data.workflow_runs;
                 break;
               }
-              if(i === 3) {
+              if(i >= max_tries) {
                 return core.setFailed('Failed to get the workflow run');
               }
             }
 
-            console.log('workflow_runs:');
-            for(const workflow_run of workflow_runs) {
-              console.log(workflow_run);
-            }
+            const workflow_run_id = workflow_runs[0].id;

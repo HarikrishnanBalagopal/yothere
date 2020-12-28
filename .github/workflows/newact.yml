@@ -29,7 +29,7 @@ jobs:
               });
             }
 
-            // await wait(2000); // pause 2 seconds to let the workflow get scheduled.
+            await wait(2000); // pause 2 seconds to let the workflow get scheduled.
 
             const resp1 = await github.actions.listWorkflowRuns({
               owner,
@@ -38,6 +38,8 @@ jobs:
               branch: commit_ref_to_run_on,
               event: "workflow_dispatch",
             });
+            console.log(resp1);
+
             for(const workflow_run of resp1.data.workflow_runs) {
               console.log(workflow_run);
             }

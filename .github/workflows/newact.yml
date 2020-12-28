@@ -31,8 +31,11 @@ jobs:
 
             await wait(2000); // pause 2 seconds to let the workflow get scheduled.
 
-            const resp1 = await octokit.request('GET /repos/{owner}/{repo}/actions/runs?event=workflow_dispatch', {
+            const resp1 = await github.actions.listWorkflowRuns({
               owner,
               repo,
+              workflow_id: workflow_filename,
+              branch: commit_ref_to_run_on,
+              event: "workflow_dispatch",
             });
             console.log(resp1);

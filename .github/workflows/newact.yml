@@ -22,3 +22,17 @@ jobs:
               inputs: {"foo": "bar"},
             });
             console.log(resp);
+
+            function wait(milli_seconds) {
+              return new Promise(resolve => {
+                setTimeout(() => resolve(), milli_seconds);
+              });
+            }
+
+            await wait(2000); // pause 2 seconds to let the workflow get scheduled.
+
+            const resp1 = await octokit.request('GET /repos/{owner}/{repo}/actions/runs?event=workflow_dispatch', {
+              owner,
+              repo,
+            });
+            console.log(resp1);

@@ -1,0 +1,17 @@
+name: triggerer
+
+on: workflow_dispatch
+
+jobs:
+  triggerer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: felixp8/dispatch-and-wait@v0.1.0
+        with:
+          owner: ${{ github.repository_owner }}
+          repo: yothere
+          token: ${{ secrets.MOVE2KUBE_PATOKEN }}
+          event_type: cli_build
+          client_payload: '{ "tag": "${{ github.run_id }}", "commit_ref": "main" }'
+          wait_time: 5
+          max_time: 1200

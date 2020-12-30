@@ -1,0 +1,36 @@
+name: Another One
+
+on:
+  repository_dispatch:
+    types: [cli_build]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag: Tag of the move2kube image to use for testing"
+        required: true
+        default: "latest"
+      commit_ref:
+        description: "commit ref: Reference to a commit or branch or tag name"
+        required: true
+        default: "latest"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.commit_ref }}
+          submodules: true
+      - id: condval
+        uses: haya14busa/action-cond@v1
+        with:
+          cond: ${{ github.event.action == 'cli_build' }}
+          if_true: ${{ github.event.client_payload.tag }}
+          if_false: ${{ github.event.inputs.tag }}
+      - run: |
+          echo 'condval outputs {{ steps.condval.outputs.value }}'
+          echo 'payload commit ref ${{ github.event.client_payload.tag }}'
+          echo 'inputs commit ref ${{ github.event.inputs.tag }}'

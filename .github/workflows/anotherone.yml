@@ -31,6 +31,6 @@ jobs:
           if_true: ${{ github.event.client_payload.tag }}
           if_false: ${{ github.event.inputs.tag }}
       - run: |
-          echo 'condval outputs {{ steps.condval.outputs.value }}'
+          echo 'condval outputs ${{ steps.condval.outputs.value }}'
           echo 'payload commit ref ${{ github.event.client_payload.tag }}'
           echo 'inputs commit ref ${{ github.event.inputs.tag }}'

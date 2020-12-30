@@ -1,8 +1,9 @@
 let printPreamble = true;
-const preamble = `# Changelog
-Some general stuff we want to say.`;
+const preamble = `For more documentation and support please visit https://konveyor.io/move2kube/
+# Changelog
+`;
 
-function templ({ heading }) {
+function printPreambleAndGroupName({ heading }) {
     const line = `\n## ${heading}\n`;
     if (printPreamble) {
         printPreamble = false;
@@ -13,15 +14,16 @@ function templ({ heading }) {
 
 module.exports = {
     "dataSource": "prs",
-    "prefix": "Move2Kube ",
-    "onlyMilestones": false,
+    "prefix": "[WIP] YoThere ",
+    // valid PR types: ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert']
     "groupBy":
     {
-        "🚀 Features": ["enhancement"],
-        "🐛 Bug Fixes": ["bug"]
+        "🚀 Features": ["enhancement", "feat", "perf"],
+        "🐛 Bug Fixes": ["bug", "fix", "revert"],
+        "🧹 Maintenance": ["docs", "style", "refactor", "test", "build", "ci", "chore"]
     },
     "template": {
-        "group": templ,
+        "group": printPreambleAndGroupName,
         "issue": ({ name, text, url }) => `- ${name} [${text}](${url})`,
     }
 }

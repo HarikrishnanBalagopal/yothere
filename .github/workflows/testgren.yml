@@ -1,0 +1,47 @@
+name: Test GREN
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "current tag: The tag for this release"
+        required: true
+        default: v0.1.0-rc.2
+      prev_tag:
+        description: "previous tag: Tag from which to start calculating the changelog"
+        required: false
+      commit_ref:
+        description: "commit ref: The branch, tag or SHA of the commit to use for the release"
+        required: false
+        default: main
+
+jobs:
+  create_release_draft:
+    needs: [tag]
+    name: Create release draft
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.commit_ref }}
+          fetch-depth: 0
+      - id: parse_semver
+        uses: booxmedialtd/ws-action-parse-semver@v1
+        with:
+          input_string: ${{ github.event.inputs.tag }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+      - name: create release draft
+        run: |
+          npm install github-release-notes@v0.17.3 -g
+          options=()
+          if [[ '${{ steps.semver_parser.outputs.prerelease }}' ]] ; then
+            options+=( '--prerelease' )
+          fi
+          if [[ '${{ github.event.inputs.prev_tag }}' ]] ; then
+            options+=( '--tags ${{ github.event.inputs.tag }}..${{ github.event.inputs.prev_tag }}' )
+          else
+            options+=( '--tags ${{ github.event.inputs.tag }}' )
+          fi
+          gren release --draft "${options[@]}" --username=${{ github.repository_owner }} --repo=${{ github.event.repository.name }} --token=${{ secrets.GITHUB_TOKEN }}

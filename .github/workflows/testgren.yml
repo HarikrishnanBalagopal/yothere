@@ -16,7 +16,46 @@ on:
         default: main
 
 jobs:
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.commit_ref }}
+      - id: get_sha
+        run: |
+          echo "::set-output name=sha::$(git rev-parse HEAD)"
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.MOVE2KUBE_PATOKEN }}
+          script: |
+            const tag = '${{ github.event.inputs.tag }}';
+            const sha = '${{ steps.get_sha.outputs.sha }}';
+            // create the tag
+            github.git.createRef({
+              ...context.repo,
+              ref: `refs/tags/${tag}`,
+              sha
+            });
+            if(!tag.endsWith('-beta.0')) {
+              return;
+            }
+            // create the release branch
+            const major_minor = /^v(\d+\.\d+)/.exec(tag);
+            if(!major_minor || major_minor.length !== 2){
+              return core.setFailed(`The tag is not a valid semantic version. tag: ${tag}`);
+            }
+            const branch_name = `release-${major_minor[1]}`;
+            core.info(`New beta.0 release. Creating new branch for ${branch_name}`);
+            github.git.createRef({
+              ...context.repo,
+              ref: `refs/heads/${branch_name}`,
+              sha
+            });
+
   create_release_draft:
+    needs: [tag]
     name: Create release draft
     runs-on: ubuntu-latest
     steps:

@@ -17,7 +17,6 @@ on:
 
 jobs:
   create_release_draft:
-    needs: [tag]
     name: Create release draft
     runs-on: ubuntu-latest
     steps:

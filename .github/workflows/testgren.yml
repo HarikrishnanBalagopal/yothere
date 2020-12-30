@@ -39,8 +39,8 @@ jobs:
             options+=( '--prerelease' )
           fi
           if [[ '${{ github.event.inputs.prev_tag }}' ]] ; then
-            options+=( '--tags ${{ github.event.inputs.tag }}..${{ github.event.inputs.prev_tag }}' )
+            options+=('--tags' '${{ github.event.inputs.tag }}..${{ github.event.inputs.prev_tag }}')
           else
-            options+=( '--tags ${{ github.event.inputs.tag }}' )
+            options+=('--tags' '${{ github.event.inputs.tag }}')
           fi
           gren release --draft "${options[@]}" --username=${{ github.repository_owner }} --repo=${{ github.event.repository.name }} --token=${{ secrets.GITHUB_TOKEN }}

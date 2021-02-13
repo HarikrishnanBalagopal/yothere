@@ -16,9 +16,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: HarikrishnanBalagopal/create-release-draft-1@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.event.inputs.tag }}
           prev_tag: ${{ github.event.inputs.prev_tag }}
-          config: ./.grenrc.js
+          config: .grenrc.js

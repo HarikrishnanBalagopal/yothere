@@ -1,0 +1,24 @@
+name: test create release draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag"
+        required: true
+        default: "v1.0.1"
+      prev_tag:
+        description: "prev_tag"
+        required: true
+        default: "v0.1.0-rc.2"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: konveyor/create-release-draft@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.event.inputs.tag }}
+          prev_tag: ${{ github.event.inputs.prev_tag }}
+          config: .grenrc.js

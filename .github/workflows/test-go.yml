@@ -28,5 +28,5 @@ jobs:
       - run: echo "done"
       - uses: actions/upload-artifact@v2
         with:
-          name: my-yothere
-          path: ./myoutput/linux-amd64/yothere
+          name: my-yothere-for-mac
+          path: ./myoutput/darwin-amd64/yothere

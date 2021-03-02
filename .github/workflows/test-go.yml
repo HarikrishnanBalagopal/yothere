@@ -18,3 +18,9 @@ jobs:
       - run: ls -a
       - run: ./yothere
       - run: echo "done"
+
+      - run: go get github.com/mitchellh/gox@v1.0.1
+      - run: mkdir -p myoutput/
+      - run: |
+          CGO_ENABLED=0 gox -parallel=3 -output="myoutput/{{.OS}}-{{.Arch}}/yothere" -osarch='darwin/amd64 linux/amd64' .
+      - run: ls -R

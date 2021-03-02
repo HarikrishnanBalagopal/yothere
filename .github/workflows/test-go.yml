@@ -1,0 +1,20 @@
+name: test go compilation
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pwd
+      - run: ls -a
+      - id: info
+        uses: konveyor/get-env-info@v1
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ steps.info.outputs.go_version }}
+      - run: go build
+      - run: ls -a
+      - run: yothere
+      - run: echo "done"

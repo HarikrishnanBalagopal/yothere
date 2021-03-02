@@ -16,5 +16,5 @@ jobs:
           go-version: ${{ steps.info.outputs.go_version }}
       - run: go build
       - run: ls -a
-      - run: yothere
+      - run: ./yothere
       - run: echo "done"

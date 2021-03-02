@@ -4,7 +4,8 @@ on: workflow_dispatch
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+    # runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - run: pwd
@@ -22,5 +23,6 @@ jobs:
       - run: |
           CGO_ENABLED=0 gox -parallel=3 -output="myoutput/{{.OS}}-{{.Arch}}/yothere" -osarch='darwin/amd64 linux/amd64' .
       - run: ls -R
-      - run: ./myoutput/darwin-amd64/yothere
+      - run: ./myoutput/linux-amd64/yothere
+      # - run: ./myoutput/darwin-amd64/yothere
       - run: echo "done"

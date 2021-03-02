@@ -26,3 +26,7 @@ jobs:
       - run: ./myoutput/linux-amd64/yothere
       # - run: ./myoutput/darwin-amd64/yothere
       - run: echo "done"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-yothere
+          path: ./myoutput/linux-amd64/yothere

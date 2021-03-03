@@ -25,9 +25,23 @@ jobs:
       - run: ls -R
       # - run: ./myoutput/linux-amd64/yothere
       - run: ./myoutput/darwin-amd64/yothere
-      - run: upx ./myoutput/darwin-amd64/yothere
+      - uses: actions/upload-artifact@v2
+        with:
+          name: before-compress
+          path: ./myoutput/darwin-amd64/yothere
+
+      - run: brew install upx
+      - run: cd ./myoutput/darwin-amd64/ && upx yothere && cd -
+      - run: ./myoutput/darwin-amd64/yothere
+      - uses: actions/upload-artifact@v2
+        with:
+          name: after-compress
+          path: ./myoutput/darwin-amd64/yothere
+
+      - run: cd ./myoutput/darwin-amd64/ && upx -d yothere && cd -
+      - run: ./myoutput/darwin-amd64/yothere
       - run: echo "done"
       - uses: actions/upload-artifact@v2
         with:
-          name: my-yothere-for-mac
+          name: after-de-compress
           path: ./myoutput/darwin-amd64/yothere

@@ -1,0 +1,10 @@
+name: test mac security
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - run: wget https://github.com/HarikrishnanBalagopal/move2kube/suites/2169995849/artifacts/44585839
+      - run: ls -R

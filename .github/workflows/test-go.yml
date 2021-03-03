@@ -31,6 +31,9 @@ jobs:
           path: ./myoutput/darwin-amd64/yothere
 
       - run: brew install upx
+      - run: brew ls
+      - run: upx --version
+
       - run: cd ./myoutput/darwin-amd64/ && upx yothere && cd -
       - run: ./myoutput/darwin-amd64/yothere
       - uses: actions/upload-artifact@v2

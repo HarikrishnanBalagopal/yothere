@@ -8,3 +8,6 @@ jobs:
     steps:
       - run: wget https://github.com/HarikrishnanBalagopal/yothere/raw/main/my-dist.zip
       - run: ls -R
+      - run: unzip my-dist.zip
+      - run: tar -xzf ./output/move2kube-latest-darwin-amd64.tar.gz
+      - run: ./move2kube/move2kube version -l
